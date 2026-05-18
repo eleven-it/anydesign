@@ -7,7 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
-## [Unreleased]
+## [0.3.0] — 2026-05-18
+
+Major release. Closes the analytical-depth gap with hand-curated competitors
+while keeping every differentiator (auto-extraction, confidence markers, DTCG,
+WCAG, standalone scripts). Adds three new scripts (lint, verify, plus updates
+to existing four). Every generated design.md now ships with YAML frontmatter
++ token refs + 6 analytical layers + Art Direction Patterns QA pass.
 
 ### Added — syntax + validation (Sprint 3)
 

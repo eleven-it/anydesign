@@ -5,7 +5,7 @@
 > can act on.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Skill Version](https://img.shields.io/badge/version-0.2.0-blue.svg)](./CHANGELOG.md)
+[![Skill Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](./CHANGELOG.md)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-purple.svg)](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 [![DTCG](https://img.shields.io/badge/Design%20Tokens-DTCG-green.svg)](https://www.designtokens.org/)
 
@@ -312,7 +312,7 @@ want to extend or fork:
 
 ## Roadmap
 
-Ideas being considered. None of these are in v0.2.
+Ideas being considered. None of these are in v0.3.
 
 - **`anydesign-compare`** — sibling skill for explicit A vs B analysis of two sources
 - **Quick-scan mode** — express analysis for moodboards (single-paragraph output)
