@@ -40,7 +40,11 @@ When you point `anydesign` at a visual source, it produces:
 Every inference is marked with a **confidence level** (✅ high / ⚠️ medium / ❓ low) so the
 output is honest about what was directly observed vs. reasonably inferred.
 
-See [`examples/`](./examples) for a full sample analysis on a real site.
+See [`examples/vercel-landing/`](./examples/vercel-landing) for a real end-to-end run of
+the skill against the live Vercel homepage — 808 CSS variables extracted, full Geist
+design-system token map, real desktop screenshot, WCAG contrast report. The
+[`examples/`](./examples) folder also contains a smaller synthetic example for
+quick orientation.
 
 ---
 

@@ -28,6 +28,9 @@ captures/
 test-output/
 *.local.json
 examples/**/*.local.*
+# Regenerable intermediate artifacts inside examples/ (keep only the curated outputs)
+examples/**/capture.html
+examples/**/css-vars-raw.json
 
 # Outputs of running the skill against this repo during development
 # (commit these intentionally when they're real examples — these defaults just guard

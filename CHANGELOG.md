@@ -7,6 +7,18 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [Unreleased]
+
+### Added
+- Real end-to-end example: `examples/vercel-landing/` — full analysis of vercel.com
+  produced by running the skill against the live site (`design.md`,
+  `design-tokens.json`, `design-a11y.md`, real desktop screenshot). 808 CSS custom
+  properties extracted from the live Geist design system. Demonstrates the URL flow
+  on a recognizable production site, including a real Geist token map and contrast
+  report.
+
+---
+
 ## [0.2.0] — 2026-05-18
 
 ### Added

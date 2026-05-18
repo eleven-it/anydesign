@@ -5,15 +5,42 @@ like before installing.
 
 ## Index
 
-- [`landing-example/`](./landing-example) — Full analysis of a fictional SaaS landing
-  ("Lumen Notes"), demonstrating the complete output: `source.md`, `design.md`,
-  `design-tokens.json` in DTCG format, and `design-a11y.md` contrast report.
+### [`vercel-landing/`](./vercel-landing) — Real analysis of vercel.com
+
+End-to-end run of the skill against the **live Vercel homepage**. Demonstrates the URL
+flow with all three capture mechanisms: HTML via `WebFetch`, 808 CSS custom properties
+extracted via `scripts/extract_css_vars.py`, plus a Playwright screenshot.
+
+The output includes the full Geist design-system token map (10-shade palette × 8 hues,
+4px spacing scale, 7-tier shadow system), a real desktop screenshot, and a WCAG contrast
+report. Nothing is invented — every value is verbatim from the live site's CSS variables.
+
+**Files:**
+- [`source.md`](./vercel-landing/source.md) — capture method + reproduction commands
+- [`design.md`](./vercel-landing/design.md) — full structured analysis
+- [`design-tokens.json`](./vercel-landing/design-tokens.json) — DTCG tokens
+- [`design-a11y.md`](./vercel-landing/design-a11y.md) — WCAG 2.1 contrast report
+- [`capture.png`](./vercel-landing/capture.png) — desktop screenshot (1440×900, downsized)
+
+### [`landing-example/`](./landing-example) — Synthetic landing ("Lumen Notes")
+
+Smaller fictional example used to demonstrate the output structure without depending on
+any third-party brand. Useful as a minimal reference for the file shape.
+
+**Files:**
+- [`source.md`](./landing-example/source.md)
+- [`design.md`](./landing-example/design.md)
+- [`design-tokens.json`](./landing-example/design-tokens.json)
+- [`design-a11y.md`](./landing-example/design-a11y.md)
 
 ## Notes
 
-- The example uses a **fictional** brand to avoid implying anything about a real product.
-  When you run the skill on a live URL, the source section will cite the actual URL.
-- The `design-tokens.json` uses the W3C Design Tokens Community Group format
-  (`$value` / `$type`).
-- Every inference carries a `confidence` field — these are *real* markers based on
-  what's directly observable in the synthetic source, demonstrating the honesty principle.
+- All `design-tokens.json` files follow the
+  [W3C Design Tokens Community Group](https://www.designtokens.org/) format
+  (`$value` / `$type`), with skill-specific confidence metadata under
+  `$extensions.anydesign`.
+- Confidence markers (✅ high / ⚠️ medium / ❓ low) reflect what was directly observed
+  vs. reasonably inferred — the same honesty principle the skill enforces.
+- For the Vercel example, intermediate artifacts (`capture.html`, `css-vars-raw.json`)
+  are regenerable via the commands in `source.md` and are intentionally not committed
+  to keep the repo small.
