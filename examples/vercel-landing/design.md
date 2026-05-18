@@ -1,3 +1,105 @@
+---
+version: anydesign-1
+name: Vercel landing (vercel.com)
+source: https://vercel.com/
+captured_at: 2026-05-18
+description: |
+  Near-monochrome editorial surface from Vercel's Geist design system. White background,
+  near-black text (#171717), black primary buttons. The brand statement is the multi-stop
+  AI gradient (orange-to-teal) wrapping the Vercel triangle in the hero. Every other
+  surface is restrained — the gradient is the one place where the brand admits marketing
+  function and quarantines it. Polarity-flipped section bands provide rhythm without
+  shadow. Full Geist token map extracted live (808 CSS custom properties).
+
+colors:
+  primary: "#171717"
+  surface: "#FFFFFF"
+  surface-alt: "#FAFAFA"
+  text-primary: "#171717"
+  text-muted: "#4D4D4D"
+  text-subtle: "#8F8F8F"
+  border: "#EBEBEB"
+  border-strong: "#A8A8A8"
+  focus-blue: "#0070F7"
+  success: "#28A948"
+  marketing-bg: "#FAFBFC"
+  geist-violet: "#7928CA"
+  geist-cyan: "#50E3C2"
+  highlight-pink: "#FF0080"
+
+typography:
+  display:
+    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 48px
+    fontWeight: 600
+    letterSpacing: -0.02em
+  h2:
+    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 30px
+    fontWeight: 600
+  body:
+    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
+  body-sm:
+    fontFamily: "Geist, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 14px
+    fontWeight: 400
+  caption-mono:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: 12px
+    fontWeight: 400
+
+spacing:
+  base: 4px
+  scale: [4, 8, 12, 16, 24, 32, 40, 64, 96, 128, 192, 256]
+
+rounded:
+  sm: 6px
+  marketing: 8px
+  modal: 12px
+  pill: 9999px
+
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.surface}"
+    typography: "{typography.body-sm}"
+    rounded: "{rounded.sm}"
+    padding: 10px 24px
+  button-secondary:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.primary}"
+    border: "1px solid {colors.border}"
+    rounded: "{rounded.sm}"
+  button-ghost:
+    backgroundColor: transparent
+    textColor: "{colors.primary}"
+    typography: "{typography.body-sm}"
+  tag-pill:
+    backgroundColor: "{colors.surface-alt}"
+    textColor: "{colors.primary}"
+    rounded: "{rounded.marketing}"
+    padding: 2px 6px
+  top-navigation:
+    backgroundColor: transparent
+    textColor: "{colors.primary}"
+    typography: "{typography.body-sm}"
+  footer-link-matrix:
+    backgroundColor: "{colors.surface}"
+    textColor: "{colors.primary}"
+  mesh-gradient-hero-asset:
+    description: "Multi-stop AI gradient at hero scale only — see Section 3.2"
+  polarity-flipped-section-bands:
+    description: "Rhythmic alternation of {colors.surface} and {colors.primary} as section background"
+  dot-grid-hero-background-pattern:
+    description: "4px radial-gradient dot raster overlaid on hero white surface"
+  operational-status-indicator:
+    backgroundColor: "{colors.success}"
+    typography: "{typography.caption-mono}"
+---
+
 # Design Analysis — Vercel landing (vercel.com)
 
 > Analysis generated with the `anydesign` skill on a **real** capture.
@@ -303,35 +405,38 @@ See companion `design-a11y.md`. Summary:
 
 #### Button — primary (observed in hero CTA, "Ready to deploy?" CTA)
 
-- **Fill**: `--ds-gray-1000` (#171717)
-- **Label**: `--ds-white` (#FFFFFF)
-- **Radius**: `--geist-radius` (6px)
+- **Fill**: `{colors.primary}` (#171717)
+- **Label**: `{colors.surface}` (#FFFFFF)
+- **Radius**: `{rounded.sm}` (6px)
 - **Iconography**: optional left-icon (Vercel triangle on "Start Deploying")
 - **Padding**: ~24px horizontal, ~10px vertical (visual estimate)
 - **Confidence**: ✅ high — observed in 2+ contexts
 
-#### Button — secondary / outline (observed as "Get a Demo")
+#### Button — secondary
 
-- **Fill**: `--ds-white` / transparent
-- **Border**: 1px via `--ds-shadow-border`
-- **Label**: `--ds-gray-1000` (#171717)
-- **Radius**: `--geist-radius` (6px)
+- **Fill**: `{colors.surface}` / transparent
+- **Border**: 1px via inset shadow (Vercel's `--ds-shadow-border` trick)
+- **Label**: `{colors.primary}` (#171717)
+- **Radius**: `{rounded.sm}` (6px)
+- **Observed as**: "Get a Demo" CTA
 - **Confidence**: ✅ high
 
-#### Button — ghost text link (observed as "Talk to an Expert")
+#### Button — ghost
 
 - **No fill, no border**
-- **Label**: `--ds-gray-1000`
+- **Label**: `{colors.primary}`
 - **Hover**: presumably underline / opacity shift (not captured in static)
+- **Observed as**: "Talk to an Expert" text link
 - **Confidence**: ⚠️ medium — only one instance captured
 
-#### Tag / Pill (observed in "Scale your [Enterprise] without compromising [Security]")
+#### Tag — pill
 
-- **Fill**: `--ds-gray-100` (#F2F2F2) very subtle
-- **Border**: 1px subtle (via `--ds-shadow-border`)
-- **Radius**: `--geist-marketing-radius` (8px) or pill (full-rounded — both visible)
+- **Fill**: `{colors.surface-alt}` (very subtle gray)
+- **Border**: 1px subtle inset shadow
+- **Radius**: `{rounded.marketing}` (8px) or `{rounded.pill}` (both visible)
 - **Padding**: tight (~6px horizontal, ~2px vertical)
-- **Label**: `--ds-gray-1000`
+- **Label**: `{colors.primary}`
+- **Observed in**: "Scale your [Enterprise] without compromising [Security]"
 - **Confidence**: ✅ high
 
 #### Top navigation
@@ -345,8 +450,8 @@ See companion `design-a11y.md`. Summary:
 #### Footer link matrix
 
 - **Structure**: 10 columns × variable rows of categorized links
-- **Section labels**: all-caps small (`--text-sm` or `--text-xs`), `--ds-gray-700`
-- **Links**: regular case, `--ds-gray-1000`
+- **Section labels**: all-caps small (`{typography.body-sm}`), `{colors.text-subtle}`
+- **Links**: regular case, `{colors.primary}`
 - **Confidence**: ✅ high
 
 ### 3.2 Signature components

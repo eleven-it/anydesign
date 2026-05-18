@@ -80,7 +80,7 @@ The `design.md` is intentionally structured (TL;DR → identity → tokens → c
 
 ## Standalone CLI scripts
 
-The four scripts in [`scripts/`](./scripts) are pure Python and **work without Claude**.
+The six scripts in [`scripts/`](./scripts) are pure Python and **work without Claude**.
 Use them in any workflow:
 
 | Script | What it does | Dependencies |
@@ -89,6 +89,8 @@ Use them in any workflow:
 | `capture_site.py` | Multi-viewport Playwright screenshots with cookie banner auto-dismiss and scroll-capture for lazy content | `playwright` |
 | `extract_colors.py` | Dominant color extraction from a local image (Pillow quantization) | `Pillow` |
 | `check_contrast.py` | WCAG 2.1 contrast checker — accepts multiple pairs or a pairs file, emits a markdown table | stdlib only |
+| `lint_design_md.py` | Validates a `design.md` against the spec: YAML frontmatter, `{token.refs}` resolve, 1:1 component mapping, Section 6 non-empty | stdlib only |
+| `verify_design.py` | Audits a `design-tokens.json` against a live URL — reports drift between declared values and current CSS. *The differentiator: lets you check if your captured tokens still match the brand.* | stdlib only |
 
 ```bash
 # Pull design tokens from any URL — no Claude needed
@@ -99,6 +101,12 @@ python scripts/capture_site.py https://your-site.com --viewports desktop,tablet,
 
 # WCAG contrast check
 python scripts/check_contrast.py --pair "#111,#FFF" --pair "#3B82F6,#FFF"
+
+# Validate a generated design.md
+python scripts/lint_design_md.py path/to/design.md
+
+# Audit declared tokens vs live site (the audit tool)
+python scripts/verify_design.py path/to/design-tokens.json https://vercel.com/
 ```
 
 Each script has `--help`.
@@ -253,7 +261,9 @@ anydesign/
 │   ├── capture_site.py            Multi-viewport Playwright capture
 │   ├── extract_css_vars.py        CSS custom properties extractor
 │   ├── extract_colors.py          Dominant color extractor (images)
-│   └── check_contrast.py          WCAG 2.1 contrast checker
+│   ├── check_contrast.py          WCAG 2.1 contrast checker
+│   ├── lint_design_md.py          design.md spec validator
+│   └── verify_design.py           Live-URL drift auditor for design-tokens.json
 └── examples/                      Sample outputs
     ├── vercel-landing/            Real run against vercel.com
     ├── landing-example/           Smaller synthetic example

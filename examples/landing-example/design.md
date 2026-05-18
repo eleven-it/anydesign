@@ -1,3 +1,78 @@
+---
+version: anydesign-1
+name: Lumen Notes (fictional)
+source: https://lumen.example/
+captured_at: 2026-05-18
+description: |
+  Clinical developer-oriented dark-mode landing in the Linear/Vercel aesthetic family.
+  Cool slate palette anchored on deep navy (#0F172A) with a single emerald accent
+  (#10B981) applied with strict scarcity (CTA + wordmark only). Geometric sans typography
+  (Inter declared in CSS). Two-tier shadow-less elevation system: depth via surface tone,
+  not drop-shadow. 22 CSS custom properties extracted from a single linked stylesheet.
+
+colors:
+  bg: "#0F172A"
+  surface-elevated: "#1E293B"
+  text-primary: "#F8FAFC"
+  text-muted: "#94A3B8"
+  text-subtle: "#64748B"
+  border: "#334155"
+  border-strong: "#475569"
+  accent: "#10B981"
+  accent-hover: "#059669"
+  success: "#22C55E"
+  warning: "#F59E0B"
+  danger: "#EF4444"
+
+typography:
+  display:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 60px
+    fontWeight: 600
+    letterSpacing: -0.02em
+  h2:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 32px
+    fontWeight: 600
+  body:
+    fontFamily: "Inter, ui-sans-serif, system-ui, sans-serif"
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.6
+  caption-mono:
+    fontFamily: "ui-monospace, monospace"
+    fontSize: 12px
+    fontWeight: 400
+
+spacing:
+  base: 4px
+  scale: [4, 8, 12, 16, 24, 32, 48, 64, 96, 128]
+
+rounded:
+  sm: 6px
+  md: 16px
+
+components:
+  button:
+    backgroundColor: "{colors.accent}"
+    textColor: "{colors.bg}"
+    rounded: "{rounded.sm}"
+    padding: 10px 24px
+  card:
+    backgroundColor: "{colors.surface-elevated}"
+    border: "1px solid {colors.border}"
+    rounded: "{rounded.md}"
+    padding: 32px
+  input:
+    backgroundColor: "{colors.bg}"
+    border: "1px solid {colors.border}"
+    focusRing: "2px solid {colors.border-strong}"
+    rounded: "{rounded.sm}"
+  badge:
+    rounded: "{rounded.sm}"
+    typography: "{typography.caption-mono}"
+---
+
 # Design Analysis — Lumen Notes (fictional)
 
 > Analysis generated with the `anydesign` skill.
@@ -170,30 +245,30 @@ See companion `design-a11y.md`. Summary:
 ### 3.1 Generic components
 
 #### Button
-- **Variants**: primary (solid accent), ghost (transparent + border-strong)
+- **Variants**: primary (solid `{colors.accent}`), ghost (transparent + `{colors.border-strong}`)
 - **Sizes**: md (40px tall)
-- **Visible states**: default, hover (color shift via `--color-accent-hover`)
+- **Visible states**: default, hover (color shift to `{colors.accent-hover}`)
 - **Padding**: 24px horizontal, 10px vertical
-- **Radius**: 6px (`--radius-sm`)
+- **Radius**: `{rounded.sm}` (6px)
 - **Confidence**: ✅ high
 
 #### Card
 - **Variants**: single — feature card with icon + title + body
-- **Background**: `--color-surface-elevated`
-- **Border**: 1px solid `--color-border`
-- **Radius**: 16px (`--radius-md`)
+- **Background**: `{colors.surface-elevated}`
+- **Border**: 1px solid `{colors.border}`
+- **Radius**: `{rounded.md}` (16px)
 - **Padding**: 32px
 - **Confidence**: ✅ high
 
 #### Input
 - **Variants**: single text input (email signup in footer)
-- **Visible states**: empty, focus (2px ring in `--color-border-strong`)
-- **Border**: 1px solid `--color-border`
+- **Visible states**: empty, focus (2px ring in `{colors.border-strong}`)
+- **Border**: 1px solid `{colors.border}`
 - **Confidence**: ⚠️ medium — only one input observed
 
 #### Badge
 - **Variants**: success, warning, danger
-- **Style**: pill (`--radius-sm`), solid background of the relevant semantic color
+- **Style**: pill (`{rounded.sm}`), solid background of the relevant semantic color
 - **Confidence**: ⚠️ medium — observed in component examples, not in active marketing copy
 
 ### 3.2 Signature components

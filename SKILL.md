@@ -177,8 +177,20 @@ when they help.
 | `extract_css_vars.py` | URL with linked stylesheets — pulls `--*` custom properties as explicit tokens | stdlib only |
 | `extract_colors.py` | Local image where vision approximation isn't precise enough; returns dominant hex codes with area % | `Pillow` |
 | `check_contrast.py` | Any time you have extracted color pairs — emits a WCAG contrast table | stdlib only |
+| `lint_design_md.py` | Validate a generated design.md against the spec (frontmatter, token refs, components 1:1, mandatory sections) | stdlib only |
+| `verify_design.py` | Audit a previously-generated `design-tokens.json` against the live URL — reports drift, deprecated, new tokens | stdlib only |
 
 Run them via `python scripts/<script>.py --help` to see the full flag set.
+
+**After generating a design.md, ALWAYS run the lint script before delivering:**
+
+```bash
+python scripts/lint_design_md.py <generated-design.md>
+```
+
+If it reports failures, fix them. Common issues: frontmatter missing required fields,
+`{token.ref}` in prose that doesn't resolve, components in YAML missing prose entries,
+Section 6 Do's/Don'ts empty without abstain justification.
 
 ---
 

@@ -9,6 +9,37 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added — syntax + validation (Sprint 3)
+
+- **YAML frontmatter at the top of every generated design.md** — structured tokens
+  (colors, typography, spacing, rounded, components) declared as YAML, parseable
+  mechanically by any agent. Required fields: `version`, `name`, `source`,
+  `captured_at`, `description`. Schema version: `anydesign-1`.
+- **`{token.refs}` syntax** for the prose body — `{colors.primary}`, `{rounded.sm}`,
+  `{typography.display}` etc. Convention: reference in the prose followed by the literal
+  value in parens for human readability. Makes the design.md refactor-safe.
+- **`scripts/lint_design_md.py`** — new stdlib-only validator. Checks: frontmatter
+  exists and has required fields, every `{token.ref}` in the body resolves to a
+  declared token, every component named in YAML `components:` has a matching prose
+  heading (1:1 enforcement), Section 6 Do's/Don'ts non-empty (or carries abstain
+  justification), Section 7 Open Questions non-empty. Returns exit 1 on failures so
+  it can wire into pre-commit hooks.
+- analysis-framework.md now instructs the model to use `{token.refs}` in prose.
+- Vercel and Lumen examples updated with frontmatter + refs; both lint clean
+  (6 pass · 0 warn · 0 fail).
+
+### Added — differentiator audit (Sprint 4)
+
+- **`scripts/verify_design.py`** — the audit tool. Takes a `design-tokens.json`
+  (DTCG) and a live URL, fetches the current CSS custom properties, and reports
+  drift by VALUE comparison: which declared tokens still match, which have drifted
+  (changed/deprecated), which new CSS values appear that weren't in the original
+  extraction scope. This is the differentiator that catalog-based competitors
+  cannot replicate — answer to "is the design.md I wrote three months ago still
+  accurate?" Output as markdown or JSON. Stdlib only.
+- Tested end-to-end against vercel.com: 96 declared tokens still match the live CSS,
+  0 drift, 106 new hex values detected in scope-expanded current site.
+
 ### Added — analytical depth (Sprint 2)
 
 - **Section 1.2 "Brand voice / Atmosphere"** in every generated `design.md` — 2-3

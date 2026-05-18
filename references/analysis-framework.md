@@ -166,6 +166,23 @@ These are not "shadows" but they ARE how the brand creates depth. Document them.
 Consult `token-extraction.md` for detailed methodology on inferring tokens from pixels and
 on the DTCG output format.
 
+### Token references in prose
+
+Every design.md has a YAML frontmatter block holding the token map. In the prose body of
+the analysis, **reference frontmatter tokens via `{token.ref}` syntax** followed by the
+literal value in parens for readability:
+
+- Instead of: *"Fill: #171717"*
+- Write: *"Fill: `{colors.primary}` (#171717)"*
+
+This makes the design.md refactor-safe (changing one YAML value re-resolves every
+reference) and machine-parseable. The `lint_design_md.py` script verifies every ref
+resolves and that every component named in YAML has a matching prose entry.
+
+Apply this discipline consistently across Sections 2, 3, and 4 — the token tables
+themselves don't need refs (they ARE the source), but every prose mention of a value
+should ref-then-value.
+
 ---
 
 ## Layer 3 — Components

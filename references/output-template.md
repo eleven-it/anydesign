@@ -9,7 +9,83 @@ due to lack of info — in which case, say so.
 
 ## Template
 
+The design.md has **two halves**: a YAML frontmatter block fenced by `---` that holds
+structured tokens an agent can parse mechanically, followed by a markdown body of prose
+sections that turns those tokens into language an agent (or a human) can act on.
+
+The frontmatter is intentionally a subset of what the companion `design-tokens.json`
+contains. The JSON is the canonical DTCG-compliant source (with `$value`/`$type`,
+confidence metadata, etc.) — the YAML is the inline-readable shorthand the body
+references via `{token.refs}`.
+
 ```markdown
+---
+version: anydesign-1
+name: [Site / file / reference name]
+source: [the URL, file path, or Figma link analyzed]
+captured_at: YYYY-MM-DD
+description: |
+  [2-3 sentence atmosphere paragraph that anchors the brand voice. NOT a tagline —
+  a dense summary an agent can read before parsing the rest. Mirrors the TL;DR but
+  scoped to brand atmosphere, not actionable insights.]
+
+colors:
+  primary: "#171717"
+  surface: "#FFFFFF"
+  text-primary: "#171717"
+  text-muted: "#4D4D4D"
+  border: "#EBEBEB"
+  accent: "#10B981"
+  # ... use semantic names, not numeric scales. Mirror the design-tokens.json palette
+  # but flatten to one-level for inline reference. Full scale lives in the JSON.
+
+typography:
+  display:
+    fontFamily: "Geist, Inter, system-ui, sans-serif"
+    fontSize: 48px
+    fontWeight: 600
+    letterSpacing: -0.02em
+  h2:
+    fontFamily: "Geist, Inter, system-ui, sans-serif"
+    fontSize: 32px
+    fontWeight: 600
+  body:
+    fontFamily: "Geist, Inter, system-ui, sans-serif"
+    fontSize: 16px
+    fontWeight: 400
+    lineHeight: 1.5
+  caption-mono:
+    fontFamily: "Geist Mono, ui-monospace, monospace"
+    fontSize: 12px
+    fontWeight: 400
+  # ... role-named styles, not h1/h2/h3 HTML tags
+
+spacing:
+  base: 4px
+  scale: [4, 8, 12, 16, 24, 32, 48, 64, 96, 128]
+
+rounded:
+  sm: 6px
+  md: 8px
+  lg: 12px
+  pill: 9999px
+
+components:
+  button-primary:
+    backgroundColor: "{colors.primary}"
+    textColor: "{colors.surface}"
+    typography: "{typography.body}"
+    rounded: "{rounded.sm}"
+    padding: 10px 24px
+  card:
+    backgroundColor: "{colors.surface}"
+    border: "1px solid {colors.border}"
+    rounded: "{rounded.lg}"
+    padding: 32px
+  # ... every component named here MUST have a matching prose entry in Section 3.
+  # The lint script enforces 1:1.
+---
+
 # Design Analysis — [Site / file / reference name]
 
 > Analysis generated with the `anydesign` skill.
@@ -425,3 +501,39 @@ me know.*
 - 4.4 Image behavior if the source has no images
 - 2.5 Decorative depth subsection if there are no atmospheric effects
 - 2.7 Accessibility quick-check if fewer than 2 color pairs available
+
+### Token reference syntax
+
+In the prose body, reference frontmatter tokens using `{...}` syntax:
+
+| Form | Example | Renders as |
+|---|---|---|
+| Color | `` `{colors.primary}` `` | A reference an agent can resolve to `#171717` |
+| Typography | `` `{typography.display}` `` | A reference resolving to the full display style block |
+| Spacing | `` `{spacing.scale[4]}` `` or `` `{spacing.base}` `` | Indexed or named |
+| Radius | `` `{rounded.sm}` `` | Resolves to `6px` |
+| Component | `` `{components.button-primary}` `` | Composed reference |
+
+**Convention**: in prose, write the ref followed by the literal value in parens for
+human readability — `{colors.primary}` (#171717). The ref is for machines and
+refactoring; the value is for the reader who's scanning.
+
+**Why this matters**: if Vercel later moves `--ds-gray-1000` from `#171717` to `#0F0F0F`,
+you change one line in the YAML frontmatter and every reference in the prose
+re-resolves. The `design.md` becomes refactor-safe.
+
+### Lint enforcement
+
+Run `python scripts/lint_design_md.py design.md` to verify:
+
+- **Frontmatter is valid YAML** with required fields (`version`, `name`, `source`)
+- **Every `{token.ref}` in the body resolves** to something defined in the frontmatter
+- **Every component named in YAML `components:` has a matching prose entry** in
+  Section 3 (the 1:1 rule)
+- **Section 6 Do's and Don'ts is non-empty** or carries the explicit abstain
+  justification
+- **Open Questions section is non-empty** or carries the "material sufficient"
+  justification
+
+The lint is advisory, not strict — it returns exit code 1 on failures so it can wire
+into pre-commit hooks if desired.
