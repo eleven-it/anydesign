@@ -1,0 +1,8 @@
+interface:
+  display_name: "AnyDesign"
+  short_description: "Extract design systems from visual sources"
+  brand_color: "#6366F1"
+  default_prompt: "Use $anydesign to analyze this visual reference and produce design.md plus design-tokens.json."
+
+policy:
+  allow_implicit_invocation: true

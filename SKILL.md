@@ -28,8 +28,8 @@ The skill supports three input types. Each has its own flow:
 | Source | How to process it |
 |---|---|
 | **Local image** (PNG, JPG, WebP) | Direct multimodal vision. You "see" it and analyze it. |
-| **Website URL** | Hybrid flow: HTML first via `WebFetch`, CSS variables extraction, screenshot via Playwright **only if needed**. |
-| **Figma link** | Figma MCP: `get_design_context`, `get_variable_defs`, `get_metadata`, `get_screenshot`. |
+| **Website URL** | Hybrid flow: fetch/read HTML first (Codex `web` tools, browser tools, or equivalent), CSS variables extraction, screenshot via Playwright **only if needed**. |
+| **Figma link** | Figma MCP/connector when available: `get_design_context`, `get_variable_defs`, `get_metadata`, `get_screenshot`. If unavailable, ask for exported screenshots or design-token files. |
 
 If the user passes multiple sources at once (e.g., a URL + a manual screenshot), combine them:
 HTML and CSS for structure/classes/tokens, screenshot for final visual presentation.
@@ -46,7 +46,7 @@ Before analyzing, confirm two things (only if unclear from the message):
 
 1. **Which source is it?** Image / URL / Figma / combination
 2. **What's the emphasis?** This determines the weight of each section of the `design.md`:
-   - **Reconstruction** → to feed Claude Code or another AI
+   - **Reconstruction** → to feed Codex, Claude Code, v0, or another AI builder
    - **Mood/reference** → to document style, branding, inspiration
    - **Design system** → to extract tokens and components as a system
 
@@ -63,12 +63,8 @@ Depending on the source, execute the corresponding flow. **Full technical detail
 **Summary by source:**
 
 - **Image**: already available — view it directly. Skip to Step 3.
-- **URL**: first `WebFetch` to retrieve HTML. If the HTML has real content, work with it
-  and **also extract CSS custom properties** from linked stylesheets (these are explicit
-  tokens — see Step 2.2.bis in `capture-flows.md`). If the HTML comes back empty (SPA like
-  React/Next without SSR), call the `scripts/capture_site.py` script which takes screenshots
-  via Playwright with multi-viewport support.
-- **Figma**: use the Figma MCP tools in this order:
+- **URL**: first fetch/read the HTML with the host environment's web or browser tools. In Codex, use the built-in `web` tools for public URLs and Browser/Chrome DevTools tools for interactive or local pages. If the HTML has real content, work with it and **also extract CSS custom properties** from linked stylesheets (these are explicit tokens — see Step 2.2.bis in `capture-flows.md`). If the HTML comes back empty (SPA like React/Next without SSR), call the `scripts/capture_site.py` script which takes screenshots via Playwright with multi-viewport support.
+- **Figma**: use Figma MCP/connector tools when available, in this order:
   1. `get_metadata` to understand the structure
   2. `get_variable_defs` to extract defined tokens
   3. `get_design_context` for detailed content
@@ -135,7 +131,7 @@ Non-negotiable output rules:
 When done, present the generated files and offer three possible paths:
 
 1. **Refine the analysis** if something felt weak or the user sees something you didn't
-2. **Convert the `design.md` into a prompt** for Claude Code, v0, or another generation tool
+2. **Convert the `design.md` into a prompt** for Codex, Claude Code, v0, or another generation tool
 3. **Analyze another source** to compare (manual comparison mode)
 
 Don't close with "anything else?". Proactively suggest the next logical step based on the
