@@ -7,6 +7,35 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [0.4.0] — 2026-05-19
+
+### Added — Claude Design bridge
+
+- **`scripts/export_for_claude_design.py`** — packages a `design.md` (+ optional
+  `design-tokens.json`) into a multi-format bundle ready to upload as "brand and product
+  assets" in [claude.ai/design](https://claude.ai/design). Emits:
+  - `brand-kit.pptx` — cover, atmosphere, color swatches (paginated), typography samples,
+    spacing/radii, components, Do's/Don'ts, reconstruction notes
+  - `brand-overview.docx` — the full `design.md` rendered as Word (headings, paragraphs,
+    bullets, tables preserved)
+  - `tokens.css` — `:root { --... }` CSS custom properties from DTCG tokens
+  - `tailwind.config.ts` — Tailwind v3 config (colors, fontFamily, fontSize, fontWeight,
+    spacing, borderRadius, boxShadow) from DTCG tokens
+  - `README-claude-design.md` — step-by-step upload instructions
+- Bridge is necessary because Claude Design does not (yet) ingest DTCG JSON or markdown
+  directly — it reads PPTX/DOCX/code-repo. This script converts anydesign's outputs into
+  the formats Claude Design's design-system extractor accepts, getting your captured
+  brand into the org-scoped design system persistently.
+- Graceful skip when optional deps (`pyyaml`, `python-pptx`, `python-docx`) aren't
+  installed — formats whose deps are missing are emitted as `(skipped: install ...)`.
+
+### Added — README
+
+- New top-level "Use with Claude Design" section in `README.md` covering the workflow
+  and artifact-to-Claude-Design-input mapping.
+
+---
+
 ## [0.3.0] — 2026-05-18
 
 Major release. Closes the analytical-depth gap with hand-curated competitors

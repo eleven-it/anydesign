@@ -5,7 +5,7 @@
 > can act on.
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Skill Version](https://img.shields.io/badge/version-0.3.0-blue.svg)](./CHANGELOG.md)
+[![Skill Version](https://img.shields.io/badge/version-0.4.0-blue.svg)](./CHANGELOG.md)
 [![Claude Skill](https://img.shields.io/badge/Claude-Skill-purple.svg)](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 [![DTCG](https://img.shields.io/badge/Design%20Tokens-DTCG-green.svg)](https://www.designtokens.org/)
 
@@ -91,6 +91,7 @@ Use them in any workflow:
 | `check_contrast.py` | WCAG 2.1 contrast checker — accepts multiple pairs or a pairs file, emits a markdown table | stdlib only |
 | `lint_design_md.py` | Validates a `design.md` against the spec: YAML frontmatter, `{token.refs}` resolve, 1:1 component mapping, Section 6 non-empty | stdlib only |
 | `verify_design.py` | Audits a `design-tokens.json` against a live URL — reports drift between declared values and current CSS. *The differentiator: lets you check if your captured tokens still match the brand.* | stdlib only |
+| `export_for_claude_design.py` | Generates a multi-format bundle (PPTX, DOCX, CSS, Tailwind config, README) ready to upload as brand assets in [claude.ai/design](https://claude.ai/design). See the [Claude Design section](#use-with-claude-design) below. | `pyyaml`, `python-pptx`, `python-docx` |
 
 ```bash
 # Pull design tokens from any URL — no Claude needed
@@ -107,9 +108,51 @@ python scripts/lint_design_md.py path/to/design.md
 
 # Audit declared tokens vs live site (the audit tool)
 python scripts/verify_design.py path/to/design-tokens.json https://vercel.com/
+
+# Bundle a design.md + tokens for upload to claude.ai/design
+python scripts/export_for_claude_design.py path/to/design.md --out my-brand-bundle/
 ```
 
 Each script has `--help`.
+
+---
+
+## Use with Claude Design
+
+[**Claude Design**](https://claude.ai/design) (Anthropic Labs, launched April 2026) builds
+a persistent design system from "brand and product assets" you upload during setup —
+PPTX decks, DOCX briefs, code repos. Every future project in your org defaults to that
+system.
+
+`anydesign` produces DTCG tokens and structured markdown, but Claude Design doesn't ingest
+either directly. The `export_for_claude_design.py` script bridges the gap.
+
+```bash
+python scripts/export_for_claude_design.py path/to/design.md --out my-brand/
+```
+
+This emits a `my-brand/` folder with five artifacts, each targeting one of Claude Design's
+setup inputs:
+
+| File | What Claude Design does with it |
+|---|---|
+| `brand-kit.pptx` | Primary asset — cover, atmosphere, color swatches, typography samples, components, Do's/Don'ts. Claude Design ingests PPTX directly. |
+| `brand-overview.docx` | The full `design.md` rendered as Word. Use as the brand brief in the setup flow. |
+| `tokens.css` | CSS custom properties generated from your DTCG tokens. Push to a small repo and link it under "Code repository" — Claude Design's extractor reads `:root { --... }`. |
+| `tailwind.config.ts` | Same path as `tokens.css`, in Tailwind v3 config form. Either format works. |
+| `README-claude-design.md` | Upload instructions and troubleshooting. |
+
+**Workflow:**
+
+1. Run `anydesign` on your reference (image, URL, or Figma file) → get `design.md` + `design-tokens.json`.
+2. Run `python scripts/export_for_claude_design.py design.md` → get the bundle.
+3. Open [claude.ai/design](https://claude.ai/design), create a new project, and upload the bundle in the design-system setup step.
+4. Claude Design extracts colors, typography, and components from the bundle. Review and adjust.
+5. Every future project in your org now uses this brand as the default.
+
+This is the only path today that gets your captured design system **persistently** into
+Claude Design — pasting `design.md` as a prompt works for a single project but doesn't
+build the design-system layer.
 
 ---
 

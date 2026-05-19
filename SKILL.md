@@ -179,6 +179,7 @@ when they help.
 | `check_contrast.py` | Any time you have extracted color pairs — emits a WCAG contrast table | stdlib only |
 | `lint_design_md.py` | Validate a generated design.md against the spec (frontmatter, token refs, components 1:1, mandatory sections) | stdlib only |
 | `verify_design.py` | Audit a previously-generated `design-tokens.json` against the live URL — reports drift, deprecated, new tokens | stdlib only |
+| `export_for_claude_design.py` | Bundle `design.md` + `design-tokens.json` into PPTX/DOCX/CSS/Tailwind for upload to claude.ai/design | `pyyaml`, `python-pptx`, `python-docx` |
 
 Run them via `python scripts/<script>.py --help` to see the full flag set.
 
